@@ -47,7 +47,7 @@ public final class OvTeleportAddon extends JavaPlugin {
         pluginManager.registerEvents(new TeleportListener(this), this);
         getCommand("canceltp").setExecutor(new TeleportCancelComand(this));
         if (mainSettings.getBoolean("enable_metrics")) {
-            new Metrics(this, 22021);
+            new Metrics(this, 26709);
         }
         checkForUpdates(mainSettings);
     }
