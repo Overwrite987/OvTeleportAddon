@@ -1,0 +1,10 @@
+name: OvTeleportAddon
+version: '${project.version}'
+author: OverwriteMC
+main: ru.overwrite.teleports.OvTeleportAddon
+api-version: 1.16
+depent: [Essentials]
+softdepend: [Vault, PlaceholderAPI]
+commands:
+  canceltp:
+    aliases: [canceltpa, cancelteleport]
