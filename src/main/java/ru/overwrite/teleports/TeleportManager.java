@@ -12,12 +12,10 @@ import ru.overwrite.teleports.actions.ActionRegistry;
 import ru.overwrite.teleports.actions.impl.*;
 import ru.overwrite.teleports.configuration.Config;
 import ru.overwrite.teleports.configuration.data.Particles;
-import ru.overwrite.teleports.utils.Utils;
 
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 @Getter
 public final class TeleportManager {
