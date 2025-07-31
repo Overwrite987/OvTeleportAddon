@@ -71,14 +71,14 @@ public final class OvTeleportAddon extends JavaPlugin {
     }
 
     private void setupPerms(ServicesManager servicesManager) {
-        perms = getProvider(servicesManager, Permission.class);
+        perms = getPermissionProvider(servicesManager);
         if (perms != null) {
             pluginLogger.info("§aМенеджер прав подключён!");
         }
     }
 
-    private <T> T getProvider(ServicesManager servicesManager, Class<T> clazz) {
-        final RegisteredServiceProvider<T> provider = servicesManager.getRegistration(clazz);
+    private Permission getPermissionProvider(ServicesManager servicesManager) {
+        final RegisteredServiceProvider<Permission> provider = servicesManager.getRegistration(Permission.class);
         return provider != null ? provider.getProvider() : null;
     }
 
