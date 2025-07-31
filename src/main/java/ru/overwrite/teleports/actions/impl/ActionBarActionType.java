@@ -10,7 +10,7 @@ import ru.overwrite.teleports.utils.Utils;
 
 public final class ActionBarActionType implements ActionType {
 
-    private static final Key KEY = Key.key("ovrandomteleport:actionbar");
+    private static final Key KEY = Key.key("ovteleportaddon:actionbar");
 
     @Override
     public @NotNull Action instance(@NotNull String context, @NotNull OvTeleportAddon plugin) {

@@ -9,7 +9,7 @@ import ru.overwrite.teleports.actions.ActionType;
 
 public final class PlayerActionType implements ActionType {
 
-    private static final Key KEY = Key.key("ovrandomteleport:player");
+    private static final Key KEY = Key.key("ovteleportaddon:player");
 
     @Override
     public @NotNull Action instance(@NotNull String context, @NotNull OvTeleportAddon plugin) {

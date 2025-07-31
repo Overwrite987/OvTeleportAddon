@@ -11,7 +11,7 @@ import ru.overwrite.teleports.utils.Utils;
 
 public final class ConsoleActionType implements ActionType {
 
-    private static final Key KEY = Key.key("ovrandomteleport:console");
+    private static final Key KEY = Key.key("ovteleportaddon:console");
 
     @Override
     public @NotNull Action instance(@NotNull String context, @NotNull OvTeleportAddon plugin) {

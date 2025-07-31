@@ -18,7 +18,7 @@ import java.util.Locale;
 
 public final class MessageActionType implements ActionType {
 
-    private static final Key KEY = Key.key("ovrandomteleport:message");
+    private static final Key KEY = Key.key("ovteleportaddon:message");
 
     @Override
     public @NotNull Action instance(@NotNull String context, @NotNull OvTeleportAddon plugin) {

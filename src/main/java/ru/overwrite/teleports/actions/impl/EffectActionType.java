@@ -11,7 +11,7 @@ import ru.overwrite.teleports.actions.ActionType;
 
 public final class EffectActionType implements ActionType {
 
-    private static final Key KEY = Key.key("ovrandomteleport:effect");
+    private static final Key KEY = Key.key("ovteleportaddon:effect");
 
     private static final int POTION_INDEX = 0;
     private static final int DURATION_INDEX = 1;

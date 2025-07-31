@@ -10,7 +10,7 @@ import ru.overwrite.teleports.utils.Utils;
 
 public final class TitleActionType implements ActionType {
 
-    private static final Key KEY = Key.key("ovrandomteleport:title");
+    private static final Key KEY = Key.key("ovteleportaddon:title");
 
     private static final int TITLE_INDEX = 0;
     private static final int SUBTITLE_INDEX = 1;

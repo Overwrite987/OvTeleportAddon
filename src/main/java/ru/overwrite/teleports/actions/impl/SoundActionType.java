@@ -12,7 +12,7 @@ import java.util.Locale;
 
 public final class SoundActionType implements ActionType {
 
-    private static final Key KEY = Key.key("ovrandomteleport:sound");
+    private static final Key KEY = Key.key("ovteleportaddon:sound");
 
     private static final int SOUND_INDEX = 0;
     private static final int VOLUME_INDEX = 1;
