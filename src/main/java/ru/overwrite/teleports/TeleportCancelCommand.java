@@ -7,12 +7,12 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import ru.overwrite.teleports.configuration.Config;
 
-public class TeleportCancelComand implements CommandExecutor {
+public class TeleportCancelCommand implements CommandExecutor {
 
     private final TeleportManager teleportManager;
     private final Config pluginConfig;
 
-    public TeleportCancelComand(OvTeleportAddon plugin) {
+    public TeleportCancelCommand(OvTeleportAddon plugin) {
         this.teleportManager = plugin.getTeleportManager();
         this.pluginConfig = plugin.getPluginConfig();
     }
