@@ -2,6 +2,7 @@ package ru.overwrite.teleports;
 
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.IUser;
+import com.earth2me.essentials.User;
 import com.earth2me.essentials.commands.WarpNotFoundException;
 import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import it.unimi.dsi.fastutil.objects.ReferenceList;
@@ -57,15 +58,16 @@ public class TeleportListener implements Listener {
         if (!e.isAccept()) {
             return;
         }
-        Player requester = e.getRequester().getBase();
-        Player requestee = e.getRequestee().getBase();
+        User requester = (User) e.getRequester();
+        IUser requestee = e.getRequestee();
         IUser.TpaRequest request = e.getTpaRequest();
         if (tpaHerePlayers.contains(request.getName())) {
             tpaHerePlayers.remove(request.getName());
-            requester = e.getRequestee().getBase();
-            requestee = e.getRequester().getBase();
+            requester = (User) e.getRequestee();
+            requestee = e.getRequester();
         }
-        teleportManager.preTeleport(requester, requestee.getName(), request.getLocation(), pluginConfig.getTpaSettings());
+        teleportManager.preTeleport(requester.getBase(), requestee.getName(), request.getLocation(), pluginConfig.getTpaSettings());
+        requester.removeTpaRequest(request.getName());
         e.setCancelled(true);
     }
 
