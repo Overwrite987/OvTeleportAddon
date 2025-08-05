@@ -5,5 +5,6 @@ public record Messages(
         String teleportedOnTeleport,
         String damagedOnTeleport,
         String damagedOtherOnTeleport,
+        String warpNotFound,
         String cancelled) {
 }

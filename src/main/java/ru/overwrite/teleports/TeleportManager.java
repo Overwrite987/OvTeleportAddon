@@ -12,6 +12,7 @@ import ru.overwrite.teleports.actions.ActionRegistry;
 import ru.overwrite.teleports.actions.impl.*;
 import ru.overwrite.teleports.configuration.Config;
 import ru.overwrite.teleports.configuration.data.Particles;
+import ru.overwrite.teleports.configuration.data.Settings;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ public final class TeleportManager {
 
     private final ActionRegistry actionRegistry;
 
+    @Getter(AccessLevel.NONE)
     private final Map<String, TeleportTask> perPlayerActiveTeleportTask = new ConcurrentHashMap<>();
 
     public TeleportManager(OvTeleportAddon plugin) {
@@ -46,30 +48,44 @@ public final class TeleportManager {
         actionRegistry.register(new TitleActionType());
     }
 
-    public boolean hasActiveTasks(String playerName) {
-        return !perPlayerActiveTeleportTask.isEmpty() && perPlayerActiveTeleportTask.containsKey(playerName);
+    public TeleportTask getActiveTask(String playerName) {
+        if (perPlayerActiveTeleportTask.isEmpty()) {
+            return null;
+        }
+        return perPlayerActiveTeleportTask.get(playerName);
     }
 
-    public void preTeleport(Player requester, Player requestee, Location loc) {
-        int channelPreTeleportCooldown = getCooldown(requester, pluginConfig.getCooldown().defaultPreTeleportCooldown(), pluginConfig.getCooldown().preTeleportCooldowns());
+    public void addActiveTask(String playerName, TeleportTask teleportTask) {
+        perPlayerActiveTeleportTask.put(playerName, teleportTask);
+    }
+
+    public void removeActiveTask(String playerName) {
+        if (perPlayerActiveTeleportTask.isEmpty()) {
+            return;
+        }
+        perPlayerActiveTeleportTask.remove(playerName);
+    }
+
+    public void preTeleport(Player requester, String teleportTo, Location loc, Settings settings) {
+        int channelPreTeleportCooldown = getCooldown(requester, settings.cooldown().defaultPreTeleportCooldown(), settings.cooldown().preTeleportCooldowns());
         if (channelPreTeleportCooldown > 0) {
-            executeActions(requester, requestee, channelPreTeleportCooldown, pluginConfig.getActions().preTeleportActions());
-            TeleportTask teleportTask = new TeleportTask(plugin, this, pluginConfig, requester, requestee, channelPreTeleportCooldown);
+            executeActions(requester, teleportTo, channelPreTeleportCooldown, settings.actions().preTeleportActions());
+            TeleportTask teleportTask = new TeleportTask(plugin, this, requester, teleportTo, channelPreTeleportCooldown, settings);
             teleportTask.startPreTeleportTimer(loc);
             return;
         }
-        teleportPlayer(requester, requestee, loc);
+        teleportPlayer(requester, teleportTo, loc, settings);
     }
 
-    public void teleportPlayer(Player requester, Player requestee, Location loc) {
-        if (pluginConfig.getInvulnerableAfterTeleport() > 0) {
+    public void teleportPlayer(Player requester, String teleportTo, Location loc, Settings settings) {
+        if (pluginConfig.getMainSettings().invulnerableAfterTeleport() > 0) {
             requester.setInvulnerable(true);
-            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> requester.setInvulnerable(false), pluginConfig.getInvulnerableAfterTeleport());
+            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> requester.setInvulnerable(false), pluginConfig.getMainSettings().invulnerableAfterTeleport());
         }
         Bukkit.getScheduler().runTask(plugin, () -> {
             requester.teleport(loc);
-            this.spawnParticleSphere(requester, pluginConfig.getParticles());
-            this.executeActions(requester, requestee, 0, pluginConfig.getActions().afterTeleportActions());
+            this.spawnParticleSphere(requester, settings.particles());
+            this.executeActions(requester, teleportTo, 0, settings.actions().afterTeleportActions());
         });
     }
 
@@ -130,11 +146,11 @@ public final class TeleportManager {
     @Getter(AccessLevel.NONE)
     private final String[] searchList = {"%teleporting_player%", "%player_teleport_to%", "%time%"};
 
-    public void executeActions(Player teleportingPlayer, Player playerTeleportTo, int cooldown, List<Action> actionList) {
+    public void executeActions(Player teleportingPlayer, String teleportTo, int cooldown, List<Action> actionList) {
         if (actionList.isEmpty()) {
             return;
         }
-        final String[] replacementList = {teleportingPlayer.getName(), playerTeleportTo.getName(), Integer.toString(cooldown)};
+        final String[] replacementList = {teleportingPlayer.getName(), teleportTo, Integer.toString(cooldown)};
         Bukkit.getScheduler().runTask(plugin, () -> {
             for (Action action : actionList) {
                 action.perform(teleportingPlayer, searchList, replacementList);

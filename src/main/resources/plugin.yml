@@ -3,7 +3,7 @@ version: '${project.version}'
 author: OverwriteMC
 main: ru.overwrite.teleports.OvTeleportAddon
 api-version: 1.16
-depent: [Essentials]
+depent: [Essentials, EssentialsSpawn]
 softdepend: [Vault, PlaceholderAPI]
 commands:
   canceltp:

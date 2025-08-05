@@ -14,7 +14,15 @@ main_settings:
   update_checker: true
   # Сколько тиков игрок должен быть неуязвим после телепортации
   invulnerable_after_teleport: 12
+  # Включить ли для команды /spawn
+  apply_to_spawn: true
+  # Включить ли для команд /tpa и /tpahere
+  apply_to_tpa: true
+  # Включить ли для команды /warp
+  apply_to_warp: true
 
+# Данные настройки выступают в качестве темплейта.
+# Вы можете указать отдельно настройки каждого из этих параметров в специализированных
 # Настройки кулдауна
 cooldown:
   # Кулдаун до телепортации (-1 чтобы отключить)
@@ -105,7 +113,7 @@ actions:
   # Формат хекса - &#IIIDDD
   # Доступные плейсхолдеры
   # %teleporting_player% - ник телепортирующегося игрока
-  # %player_teleport_to% - имя игрока к которому вы будете телепортированы
+  # %teleport_to% - имя игрока / название варпа к которому будет телепортирован игрок
   # %time% - время до телепортации
   # Для [MESSAGE] доступен ховертекст и клик-ивент. Указывать через hoverText={Текст-при-наведении} и clickEvent={айди-действия;действие-при-клике}
   # Доступные действия для clickEvent: https://www.javadoc.io/static/net.kyori/adventure-api/4.17.0/net/kyori/adventure/text/event/ClickEvent.Action.html
@@ -130,11 +138,11 @@ actions:
 # Если вы хотите отключить сообщение - укажите ''
 messages:
   prefix: '&7&l(&5&lOvTeleportAddon&7&l) &6»&r'
-  # Сообщения ниже могут быть применены так же и к каналам
   moved_on_teleport: '%prefix% &cВы двинулись! Телепортация отменена.'
   teleported_on_teleport: '%prefix% &cВы телепортировались в процессе РТП! Телепортация отменена.'
   damaged_on_teleport: '%prefix% &cВы получили урон! Телепортация отменена.'
   damaged_other_on_teleport: '%prefix% &cВы нанесли урон! Телепортация отменена.'
+  warp_not_found: '%prefix% &cВарп не найден!'
   # Сообщение команды /canceltp и т.д.
   cancelled: '%prefix% &aТелепортация отменена!'
   # Заполнители плейсхолдеров PlaceholderAPI

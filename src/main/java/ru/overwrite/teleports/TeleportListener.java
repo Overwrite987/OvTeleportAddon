@@ -1,10 +1,15 @@
 package ru.overwrite.teleports;
 
+import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.IUser;
+import com.earth2me.essentials.commands.WarpNotFoundException;
 import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import it.unimi.dsi.fastutil.objects.ReferenceList;
 import net.ess3.api.events.TPARequestEvent;
+import net.ess3.api.events.UserWarpEvent;
 import net.essentialsx.api.v2.events.TeleportRequestResponseEvent;
+import net.essentialsx.api.v2.events.UserTeleportSpawnEvent;
+import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,14 +30,19 @@ public class TeleportListener implements Listener {
     private final TeleportManager teleportManager;
     private final Config pluginConfig;
     private final ReferenceList<String> tpaHerePlayers = new ReferenceArrayList<>();
+    private final Essentials essentials;
 
     public TeleportListener(OvTeleportAddon plugin) {
         this.teleportManager = plugin.getTeleportManager();
         this.pluginConfig = plugin.getPluginConfig();
+        this.essentials = (Essentials) plugin.getServer().getPluginManager().getPlugin("Essentials");
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onTeleportRequest(TPARequestEvent e) {
+        if (!pluginConfig.getMainSettings().applyToTpa()) {
+            return;
+        }
         if (e.isTeleportHere()) {
             // Дамы и господа. Это был самый УЕБАНСКИЙ костыль, который я когда-либо делал в своей сука жизни.
             tpaHerePlayers.add(e.getRequester().getPlayer().getName());
@@ -40,7 +50,10 @@ public class TeleportListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onTeleportRequestResponse(TeleportRequestResponseEvent e) {
+    public void onTpa(TeleportRequestResponseEvent e) {
+        if (!pluginConfig.getMainSettings().applyToTpa()) {
+            return;
+        }
         if (!e.isAccept()) {
             return;
         }
@@ -52,7 +65,33 @@ public class TeleportListener implements Listener {
             requester = e.getRequestee().getBase();
             requestee = e.getRequester().getBase();
         }
-        teleportManager.preTeleport(requester, requestee, request.getLocation());
+        teleportManager.preTeleport(requester, requestee.getName(), request.getLocation(), pluginConfig.getTpaSettings());
+        e.setCancelled(true);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onSpawn(UserTeleportSpawnEvent e) {
+        if (!pluginConfig.getMainSettings().applyToSpawn()) {
+            return;
+        }
+        Player player = e.getUser().getBase();
+        teleportManager.preTeleport(player, "spawn", e.getSpawnLocation(), pluginConfig.getSpawnSettings());
+        e.setCancelled(true);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onWarp(UserWarpEvent e) {
+        if (!pluginConfig.getMainSettings().applyToWarp()) {
+            return;
+        }
+        Player player = e.getUser().getBase();
+        Location loc;
+        try {
+            loc = this.essentials.getWarps().getWarp(e.getWarp());
+        } catch (WarpNotFoundException ex) {
+            return;
+        }
+        teleportManager.preTeleport(player, e.getWarp(), loc, pluginConfig.getWarpSettings());
         e.setCancelled(true);
     }
 
@@ -63,8 +102,9 @@ public class TeleportListener implements Listener {
         }
         Player player = e.getPlayer();
         String playerName = player.getName();
-        if (teleportManager.hasActiveTasks(playerName)) {
-            if (pluginConfig.getRestrictions().restrictMove()) {
+        TeleportTask task = teleportManager.getActiveTask(playerName);
+        if (task != null) {
+            if (task.getSettings().restrictions().restrictMove()) {
                 Utils.sendMessage(pluginConfig.getMessages().movedOnTeleport(), player);
                 this.cancelTeleportation(playerName);
             }
@@ -78,8 +118,9 @@ public class TeleportListener implements Listener {
         }
         Player player = e.getPlayer();
         String playerName = player.getName();
-        if (teleportManager.hasActiveTasks(playerName)) {
-            if (pluginConfig.getRestrictions().restrictTeleport()) {
+        TeleportTask task = teleportManager.getActiveTask(playerName);
+        if (task != null) {
+            if (task.getSettings().restrictions().restrictTeleport()) {
                 Utils.sendMessage(pluginConfig.getMessages().teleportedOnTeleport(), player);
                 this.cancelTeleportation(playerName);
             }
@@ -92,8 +133,9 @@ public class TeleportListener implements Listener {
             return;
         }
         String playerName = player.getName();
-        if (teleportManager.hasActiveTasks(playerName)) {
-            Restrictions restrictions = pluginConfig.getRestrictions();
+        TeleportTask task = teleportManager.getActiveTask(playerName);
+        if (task != null) {
+            Restrictions restrictions = task.getSettings().restrictions();
             if (restrictions.restrictDamage() && !restrictions.damageCheckOnlyPlayers()) {
                 Utils.sendMessage(pluginConfig.getMessages().damagedOnTeleport(), player);
                 this.cancelTeleportation(playerName);
@@ -116,8 +158,9 @@ public class TeleportListener implements Listener {
 
     private void handleDamagerPlayer(Player damager, Entity damagedEntity) {
         String damagerName = damager.getName();
-        if (teleportManager.hasActiveTasks(damagerName)) {
-            Restrictions restrictions = pluginConfig.getRestrictions();
+        TeleportTask task = teleportManager.getActiveTask(damagerName);
+        if (task != null) {
+            Restrictions restrictions = task.getSettings().restrictions();
             if (restrictions.restrictDamageOthers()) {
                 if (restrictions.damageCheckOnlyPlayers() && !(damagedEntity instanceof Player)) {
                     return;
@@ -130,8 +173,9 @@ public class TeleportListener implements Listener {
 
     private void handleDamagedPlayer(Entity damagerEntity, Player damaged) {
         String damagedName = damaged.getName();
-        if (teleportManager.hasActiveTasks(damagedName)) {
-            Restrictions restrictions = pluginConfig.getRestrictions();
+        TeleportTask task = teleportManager.getActiveTask(damagedName);
+        if (task != null) {
+            Restrictions restrictions = task.getSettings().restrictions();
             if (restrictions.restrictDamage()) {
                 Player damager = getDamager(damagerEntity);
                 if (damager == null && restrictions.damageCheckOnlyPlayers()) {
@@ -190,13 +234,13 @@ public class TeleportListener implements Listener {
 
     private void handlePlayerLeave(Player player) {
         String playerName = player.getName();
-        if (teleportManager.hasActiveTasks(playerName)) {
+        if (teleportManager.getActiveTask(playerName) != null) {
             this.cancelTeleportation(playerName);
         }
         tpaHerePlayers.remove(playerName);
     }
 
     private void cancelTeleportation(String playerName) {
-        teleportManager.getPerPlayerActiveTeleportTask().get(playerName).cancel();
+        teleportManager.getActiveTask(playerName).cancel();
     }
 }

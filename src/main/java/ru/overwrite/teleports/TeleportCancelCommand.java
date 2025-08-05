@@ -22,7 +22,7 @@ public class TeleportCancelCommand implements CommandExecutor {
         if (!(sender instanceof Player player)) {
             return true;
         }
-        TeleportTask task = teleportManager.getPerPlayerActiveTeleportTask().get(player.getName());
+        TeleportTask task = teleportManager.getActiveTask(player.getName());
         if (task != null) {
             task.cancel();
             player.sendMessage(pluginConfig.getMessages().cancelled());
