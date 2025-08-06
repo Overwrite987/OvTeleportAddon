@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import ru.overwrite.teleports.configuration.Config;
+import ru.overwrite.teleports.utils.Utils;
 
 public class TeleportCancelCommand implements CommandExecutor {
 
@@ -25,7 +26,7 @@ public class TeleportCancelCommand implements CommandExecutor {
         TeleportTask task = teleportManager.getActiveTask(player.getName());
         if (task != null) {
             task.cancel();
-            player.sendMessage(pluginConfig.getMessages().cancelled());
+            Utils.sendMessage(pluginConfig.getMessages().cancelled(), player);
         }
         return true;
     }
