@@ -8,11 +8,14 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import ru.overwrite.teleports.actions.Action;
 import ru.overwrite.teleports.animations.BasicAnimation;
 import ru.overwrite.teleports.configuration.data.Actions;
 import ru.overwrite.teleports.configuration.data.Bossbar;
 import ru.overwrite.teleports.configuration.data.Settings;
 import ru.overwrite.teleports.utils.Utils;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 public class TeleportTask {
@@ -84,10 +87,9 @@ public class TeleportTask {
         if (actions.onCooldownActions().isEmpty()) {
             return;
         }
-        for (int time : actions.onCooldownActions().keySet()) {
-            if (time == preTeleportCooldown) {
-                teleportManager.executeActions(this.teleportingPlayer, this.teleportTo, finalPreTeleportCooldown, actions.onCooldownActions().get(time));
-            }
+        List<Action> actionList = actions.onCooldownActions().get(preTeleportCooldown);
+        if (actionList != null) {
+            teleportManager.executeActions(this.teleportingPlayer, this.teleportTo, finalPreTeleportCooldown, actionList);
         }
     }
 
