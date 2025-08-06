@@ -60,15 +60,15 @@ public class TeleportListener implements Listener {
             return;
         }
         User requester = (User) e.getRequester();
-        IUser requestee = e.getRequestee();
+        User requestee = (User) e.getRequestee();
         IUser.TpaRequest request = e.getTpaRequest();
         if (tpaHerePlayers.contains(request.getName())) {
             tpaHerePlayers.remove(request.getName());
             requester = (User) e.getRequestee();
-            requestee = e.getRequester();
+            requestee = (User) e.getRequester();
         }
         teleportManager.preTeleport(requester.getBase(), requestee.getName(), request.getLocation(), pluginConfig.getTpaSettings());
-        requester.removeTpaRequest(request.getName());
+        requestee.removeTpaRequest(requestee.getName());
         e.setCancelled(true);
     }
 
