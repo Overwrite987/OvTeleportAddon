@@ -14,3 +14,4 @@
 
 ### Команды:
 - /canceltp - отменить телепортацию.
+- /ovteleportaddon - команда перезагрузки плагина (Право - teleportaddon.admin)
