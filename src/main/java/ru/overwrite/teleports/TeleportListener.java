@@ -92,6 +92,7 @@ public class TeleportListener implements Listener {
         try {
             loc = this.essentials.getWarps().getWarp(e.getWarp());
         } catch (WarpNotFoundException ex) {
+            Utils.sendMessage(pluginConfig.getMessages().warpNotFound(), player);
             return;
         }
         teleportManager.preTeleport(player, e.getWarp(), loc, pluginConfig.getWarpSettings());
