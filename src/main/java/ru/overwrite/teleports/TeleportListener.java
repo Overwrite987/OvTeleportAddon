@@ -68,7 +68,7 @@ public class TeleportListener implements Listener {
             requestee = (User) e.getRequester();
         }
         teleportManager.preTeleport(requester.getBase(), requestee.getName(), request.getLocation(), pluginConfig.getTpaSettings());
-        requestee.removeTpaRequest(requestee.getName());
+        requestee.removeTpaRequest(requester.getName());
         e.setCancelled(true);
     }
 
