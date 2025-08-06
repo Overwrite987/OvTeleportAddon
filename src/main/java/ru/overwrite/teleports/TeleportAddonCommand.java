@@ -3,6 +3,7 @@ package ru.overwrite.teleports;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 import ru.overwrite.teleports.configuration.Config;
 
@@ -25,8 +26,8 @@ public class TeleportAddonCommand implements CommandExecutor {
             return true;
         }
         teleportManager.cancelAllTasks();
-        plugin.reloadConfig();
-        pluginConfig.setupConfig(plugin.getConfig());
+        final FileConfiguration config = pluginConfig.getFile(plugin.getDataFolder().getAbsolutePath(), "config.yml");
+        pluginConfig.setupConfig(config);
         sender.sendMessage(pluginConfig.getMessages().reload());
         return true;
     }
