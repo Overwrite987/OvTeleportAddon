@@ -25,7 +25,7 @@ public class Config {
 
     private Settings template;
 
-    private Settings spawnSettings, tpaSettings, warpSettings;
+    private Settings spawnSettings, tpaSettings, warpSettings, homeSettings;
 
     public static String timeHours, timeMinutes, timeSeconds;
 
@@ -35,6 +35,7 @@ public class Config {
         spawnSettings = Settings.create(plugin, getFile(plugin.getDataFolder().getAbsolutePath(), "spawn.yml"), this, template, true);
         tpaSettings = Settings.create(plugin, getFile(plugin.getDataFolder().getAbsolutePath(), "tpa.yml"), this, template, true);
         warpSettings = Settings.create(plugin, getFile(plugin.getDataFolder().getAbsolutePath(), "warp.yml"), this, template, true);
+        homeSettings = Settings.create(plugin, getFile(plugin.getDataFolder().getAbsolutePath(), "home.yml"), this, template, true);
         setupMessages(config.getConfigurationSection("messages"));
     }
 
@@ -45,7 +46,8 @@ public class Config {
                 mainSettings.getInt("invulnerable_after_teleport", 12),
                 mainSettings.getBoolean("apply_to_spawn", true),
                 mainSettings.getBoolean("apply_to_tpa", true),
-                mainSettings.getBoolean("apply_to_warp", true)
+                mainSettings.getBoolean("apply_to_warp", true),
+                mainSettings.getBoolean("apply_to_home", true)
         );
     }
 

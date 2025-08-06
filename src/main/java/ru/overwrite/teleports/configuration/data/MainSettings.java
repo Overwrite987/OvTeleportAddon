@@ -4,5 +4,6 @@ public record MainSettings(
         int invulnerableAfterTeleport,
         boolean applyToSpawn,
         boolean applyToTpa,
-        boolean applyToWarp) {
+        boolean applyToWarp,
+        boolean applyToHome) {
 }

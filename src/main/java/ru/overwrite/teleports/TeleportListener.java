@@ -7,6 +7,7 @@ import com.earth2me.essentials.commands.WarpNotFoundException;
 import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import it.unimi.dsi.fastutil.objects.ReferenceList;
 import net.ess3.api.events.TPARequestEvent;
+import net.ess3.api.events.UserTeleportHomeEvent;
 import net.ess3.api.events.UserWarpEvent;
 import net.essentialsx.api.v2.events.TeleportRequestResponseEvent;
 import net.essentialsx.api.v2.events.UserTeleportSpawnEvent;
@@ -94,6 +95,17 @@ public class TeleportListener implements Listener {
             return;
         }
         teleportManager.preTeleport(player, e.getWarp(), loc, pluginConfig.getWarpSettings());
+        e.setCancelled(true);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onHome(UserTeleportHomeEvent e) {
+        if (!pluginConfig.getMainSettings().applyToHome()) {
+            return;
+        }
+        User player = (User) e.getUser();
+        Location loc = player.getHome(e.getHomeName());
+        teleportManager.preTeleport(player.getBase(), e.getHomeName(), loc, pluginConfig.getHomeSettings());
         e.setCancelled(true);
     }
 
