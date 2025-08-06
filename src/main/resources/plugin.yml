@@ -8,3 +8,5 @@ softdepend: [Vault, PlaceholderAPI]
 commands:
   canceltp:
     aliases: [canceltpa, cancelteleport]
+  ovteleportaddon:
+    aliases: [teleportaddon]

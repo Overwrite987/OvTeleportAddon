@@ -67,7 +67,9 @@ public class Config {
                 getPrefixed(messages.getString("damaged_on_teleport", "messages.damaged_on_teleport"), messagesPrefix),
                 getPrefixed(messages.getString("damaged_other_on_teleport", "messages.damaged_other_on_teleport"), messagesPrefix),
                 getPrefixed(messages.getString("warp_not_found", "messages.warp_not_found"), messagesPrefix),
-                getPrefixed(messages.getString("cancelled", "messages.cancelled"), messagesPrefix)
+                getPrefixed(messages.getString("cancelled", "messages.cancelled"), messagesPrefix),
+                getPrefixed(messages.getString("reload", "messages.reload"), messagesPrefix),
+                getPrefixed(messages.getString("no_perms", "messages.no_perms"), messagesPrefix)
         );
 
         final ConfigurationSection time = messages.getConfigurationSection("placeholders.time");

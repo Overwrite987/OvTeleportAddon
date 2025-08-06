@@ -145,6 +145,9 @@ messages:
   warp_not_found: '%prefix% &cВарп не найден!'
   # Сообщение команды /canceltp и т.д.
   cancelled: '%prefix% &aТелепортация отменена!'
+  # Сообщение команды /teleportaddon
+  reload: '%prefix% &aПлагин успешно перезагружен!'
+  no_perms: '%prefix% &cУ вас не достаточно прав на использование этой команды.'
   # Заполнители плейсхолдеров PlaceholderAPI
   placeholders:
     # Плейсхолдеры времени

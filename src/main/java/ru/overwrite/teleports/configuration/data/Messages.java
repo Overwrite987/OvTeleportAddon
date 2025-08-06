@@ -6,5 +6,7 @@ public record Messages(
         String damagedOnTeleport,
         String damagedOtherOnTeleport,
         String warpNotFound,
-        String cancelled) {
+        String cancelled,
+        String reload,
+        String noPerms) {
 }
