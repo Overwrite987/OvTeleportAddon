@@ -1,9 +1,11 @@
 package ru.overwrite.teleports;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import ru.overwrite.teleports.configuration.Config;
 
@@ -28,6 +30,8 @@ public class TeleportAddonCommand implements CommandExecutor {
         teleportManager.cancelAllTasks();
         final FileConfiguration config = pluginConfig.getFile(plugin.getDataFolder().getAbsolutePath(), "config.yml");
         pluginConfig.setupConfig(config);
+        HandlerList.unregisterAll(plugin);
+        plugin.registerEvents(Bukkit.getPluginManager());
         sender.sendMessage(pluginConfig.getMessages().reload());
         return true;
     }

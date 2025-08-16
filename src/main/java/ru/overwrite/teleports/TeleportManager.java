@@ -1,6 +1,8 @@
 package ru.overwrite.teleports;
 
 import it.unimi.dsi.fastutil.objects.Object2IntSortedMap;
+import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
+import it.unimi.dsi.fastutil.objects.ReferenceList;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -27,6 +29,7 @@ public final class TeleportManager {
     private final Config pluginConfig;
 
     private final ActionRegistry actionRegistry;
+    private final ReferenceList<String> tpaHerePlayers = new ReferenceArrayList<>();
 
     @Getter(AccessLevel.NONE)
     private final Map<String, TeleportTask> perPlayerActiveTeleportTask = new ConcurrentHashMap<>();

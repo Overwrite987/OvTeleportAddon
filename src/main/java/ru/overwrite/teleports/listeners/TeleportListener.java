@@ -1,17 +1,5 @@
-package ru.overwrite.teleports;
+package ru.overwrite.teleports.listeners;
 
-import com.earth2me.essentials.Essentials;
-import com.earth2me.essentials.IUser;
-import com.earth2me.essentials.User;
-import com.earth2me.essentials.commands.WarpNotFoundException;
-import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
-import it.unimi.dsi.fastutil.objects.ReferenceList;
-import net.ess3.api.events.TPARequestEvent;
-import net.ess3.api.events.UserTeleportHomeEvent;
-import net.ess3.api.events.UserWarpEvent;
-import net.essentialsx.api.v2.events.TeleportRequestResponseEvent;
-import net.essentialsx.api.v2.events.UserTeleportSpawnEvent;
-import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,6 +11,9 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.projectiles.ProjectileSource;
+import ru.overwrite.teleports.OvTeleportAddon;
+import ru.overwrite.teleports.TeleportManager;
+import ru.overwrite.teleports.TeleportTask;
 import ru.overwrite.teleports.configuration.Config;
 import ru.overwrite.teleports.configuration.data.Restrictions;
 import ru.overwrite.teleports.utils.Utils;
@@ -31,83 +22,10 @@ public class TeleportListener implements Listener {
 
     private final TeleportManager teleportManager;
     private final Config pluginConfig;
-    private final ReferenceList<String> tpaHerePlayers = new ReferenceArrayList<>();
-    private final Essentials essentials;
 
     public TeleportListener(OvTeleportAddon plugin) {
         this.teleportManager = plugin.getTeleportManager();
         this.pluginConfig = plugin.getPluginConfig();
-        this.essentials = (Essentials) plugin.getServer().getPluginManager().getPlugin("Essentials");
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onTeleportRequest(TPARequestEvent e) {
-        if (!pluginConfig.getMainSettings().applyToTpa()) {
-            return;
-        }
-        if (e.isTeleportHere()) {
-            // Дамы и господа. Это был самый УЕБАНСКИЙ костыль, который я когда-либо делал в своей сука жизни.
-            tpaHerePlayers.add(e.getRequester().getPlayer().getName());
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onTpa(TeleportRequestResponseEvent e) {
-        if (!pluginConfig.getMainSettings().applyToTpa()) {
-            return;
-        }
-        if (!e.isAccept()) {
-            return;
-        }
-        User requester = (User) e.getRequester();
-        User requestee = (User) e.getRequestee();
-        IUser.TpaRequest request = e.getTpaRequest();
-        if (tpaHerePlayers.contains(request.getName())) {
-            tpaHerePlayers.remove(request.getName());
-            requester = (User) e.getRequestee();
-            requestee = (User) e.getRequester();
-        }
-        teleportManager.preTeleport(requester.getBase(), requestee.getName(), request.getLocation(), pluginConfig.getTpaSettings());
-        requestee.removeTpaRequest(requester.getName());
-        e.setCancelled(true);
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onSpawn(UserTeleportSpawnEvent e) {
-        if (!pluginConfig.getMainSettings().applyToSpawn()) {
-            return;
-        }
-        Player player = e.getUser().getBase();
-        teleportManager.preTeleport(player, "spawn", e.getSpawnLocation(), pluginConfig.getSpawnSettings());
-        e.setCancelled(true);
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onWarp(UserWarpEvent e) {
-        if (!pluginConfig.getMainSettings().applyToWarp()) {
-            return;
-        }
-        Player player = e.getUser().getBase();
-        Location loc;
-        try {
-            loc = this.essentials.getWarps().getWarp(e.getWarp());
-        } catch (WarpNotFoundException ex) {
-            Utils.sendMessage(pluginConfig.getMessages().warpNotFound(), player);
-            return;
-        }
-        teleportManager.preTeleport(player, e.getWarp(), loc, pluginConfig.getWarpSettings());
-        e.setCancelled(true);
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onHome(UserTeleportHomeEvent e) {
-        if (!pluginConfig.getMainSettings().applyToHome()) {
-            return;
-        }
-        User player = (User) e.getUser();
-        Location loc = player.getHome(e.getHomeName());
-        teleportManager.preTeleport(player.getBase(), e.getHomeName(), loc, pluginConfig.getHomeSettings());
-        e.setCancelled(true);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -252,7 +170,7 @@ public class TeleportListener implements Listener {
         if (teleportManager.getActiveTask(playerName) != null) {
             this.cancelTeleportation(playerName);
         }
-        tpaHerePlayers.remove(playerName);
+        teleportManager.getTpaHerePlayers().remove(playerName);
     }
 
     private void cancelTeleportation(String playerName) {

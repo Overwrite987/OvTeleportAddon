@@ -1,5 +1,6 @@
 package ru.overwrite.teleports;
 
+import com.earth2me.essentials.Essentials;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.milkbowl.vault.permission.Permission;
@@ -12,6 +13,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.overwrite.teleports.configuration.Config;
+import ru.overwrite.teleports.listeners.*;
 import ru.overwrite.teleports.utils.Utils;
 import ru.overwrite.teleports.utils.VersionUtils;
 import ru.overwrite.teleports.utils.logging.BukkitLogger;
@@ -32,6 +34,8 @@ public final class OvTeleportAddon extends JavaPlugin {
 
     private Permission perms;
 
+    private Essentials essentials;
+
     @Override
     public void onEnable() {
         final FileConfiguration config = pluginConfig.getFile(getDataFolder().getAbsolutePath(), "config.yml");
@@ -42,14 +46,31 @@ public final class OvTeleportAddon extends JavaPlugin {
             ServicesManager servicesManager = server.getServicesManager();
             setupPerms(servicesManager);
         }
+        essentials = (Essentials) pluginManager.getPlugin("Essentials");
         pluginConfig.setupConfig(config);
-        pluginManager.registerEvents(new TeleportListener(this), this);
+        registerEvents(pluginManager);
         getCommand("canceltp").setExecutor(new TeleportCancelCommand(this));
         getCommand("ovteleportaddon").setExecutor(new TeleportAddonCommand(this));
         if (mainSettings.getBoolean("enable_metrics")) {
             new Metrics(this, 26709);
         }
         checkForUpdates(mainSettings);
+    }
+
+    public void registerEvents(PluginManager pluginManager) {
+        if (pluginConfig.getMainSettings().applyToSpawn()) {
+            pluginManager.registerEvents(new SpawnListener(this), this);
+        }
+        if (pluginConfig.getMainSettings().applyToTpa()) {
+            pluginManager.registerEvents(new TpaListener(this), this);
+        }
+        if (pluginConfig.getMainSettings().applyToWarp()) {
+            pluginManager.registerEvents(new WarpListener(this), this);
+        }
+        if (pluginConfig.getMainSettings().applyToHome()) {
+            pluginManager.registerEvents(new HomeListener(this), this);
+        }
+        pluginManager.registerEvents(new TeleportListener(this), this);
     }
 
     public void checkForUpdates(ConfigurationSection mainSettings) {
