@@ -21,10 +21,11 @@ public class HomeListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onHome(UserTeleportHomeEvent e) {
-        if (!pluginConfig.getMainSettings().applyToHome()) {
+        User player = (User) e.getUser();
+        if (teleportManager.hasActiveTasks(player.getName())) {
+            e.setCancelled(true);
             return;
         }
-        User player = (User) e.getUser();
         Location loc = player.getHome(e.getHomeName());
         teleportManager.preTeleport(player.getBase(), e.getHomeName(), loc, pluginConfig.getHomeSettings());
         e.setCancelled(true);

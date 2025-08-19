@@ -26,10 +26,11 @@ public class WarpListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onWarp(UserWarpEvent e) {
-        if (!pluginConfig.getMainSettings().applyToWarp()) {
+        Player player = e.getUser().getBase();
+        if (teleportManager.hasActiveTasks(player.getName())) {
+            e.setCancelled(true);
             return;
         }
-        Player player = e.getUser().getBase();
         Location loc;
         try {
             loc = this.essentials.getWarps().getWarp(e.getWarp());

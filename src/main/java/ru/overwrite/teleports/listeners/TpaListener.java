@@ -33,17 +33,13 @@ public class TpaListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onTpa(TeleportRequestResponseEvent e) {
-        if (!pluginConfig.getMainSettings().applyToTpa()) {
-            return;
-        }
         if (!e.isAccept()) {
             return;
         }
         User requester = (User) e.getRequester();
         User requestee = (User) e.getRequestee();
         IUser.TpaRequest request = e.getTpaRequest();
-        if (teleportManager.getTpaHerePlayers().contains(request.getName())) {
-            teleportManager.getTpaHerePlayers().remove(request.getName());
+        if (teleportManager.getTpaHerePlayers().remove(request.getName())) {
             requester = (User) e.getRequestee();
             requestee = (User) e.getRequester();
         }

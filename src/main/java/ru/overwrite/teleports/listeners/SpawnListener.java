@@ -20,10 +20,11 @@ public class SpawnListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onSpawn(UserTeleportSpawnEvent e) {
-        if (!pluginConfig.getMainSettings().applyToSpawn()) {
+        Player player = e.getUser().getBase();
+        if (teleportManager.hasActiveTasks(player.getName())) {
+            e.setCancelled(true);
             return;
         }
-        Player player = e.getUser().getBase();
         teleportManager.preTeleport(player, "spawn", e.getSpawnLocation(), pluginConfig.getSpawnSettings());
         e.setCancelled(true);
     }

@@ -51,6 +51,10 @@ public final class TeleportManager {
         actionRegistry.register(new TitleActionType());
     }
 
+    public boolean hasActiveTasks(String playerName) {
+        return !perPlayerActiveTeleportTask.isEmpty() && perPlayerActiveTeleportTask.containsKey(playerName);
+    }
+
     public TeleportTask getActiveTask(String playerName) {
         if (perPlayerActiveTeleportTask.isEmpty()) {
             return null;
