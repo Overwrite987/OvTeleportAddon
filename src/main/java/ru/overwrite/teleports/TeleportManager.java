@@ -44,6 +44,7 @@ public final class TeleportManager {
     private void registerDefaultActions() {
         actionRegistry.register(new ActionBarActionType());
         actionRegistry.register(new ConsoleActionType());
+        actionRegistry.register(new DelayedActionActionType());
         actionRegistry.register(new EffectActionType());
         actionRegistry.register(new MessageActionType());
         actionRegistry.register(new PlayerActionType());
