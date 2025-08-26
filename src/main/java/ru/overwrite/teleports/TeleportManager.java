@@ -17,8 +17,8 @@ import ru.overwrite.teleports.configuration.data.Particles;
 import ru.overwrite.teleports.configuration.data.Settings;
 
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Getter
 public final class TeleportManager {
@@ -32,7 +32,7 @@ public final class TeleportManager {
     private final ReferenceList<String> tpaHerePlayers = new ReferenceArrayList<>();
 
     @Getter(AccessLevel.NONE)
-    private final Map<String, TeleportTask> perPlayerActiveTeleportTask = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, TeleportTask> perPlayerActiveTeleportTask = new ConcurrentHashMap<>();
 
     public TeleportManager(OvTeleportAddon plugin) {
         this.plugin = plugin;
