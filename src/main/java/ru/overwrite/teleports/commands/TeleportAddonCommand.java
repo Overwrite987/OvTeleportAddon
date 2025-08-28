@@ -1,4 +1,4 @@
-package ru.overwrite.teleports;
+package ru.overwrite.teleports.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+import ru.overwrite.teleports.OvTeleportAddon;
+import ru.overwrite.teleports.TeleportManager;
 import ru.overwrite.teleports.configuration.Config;
 
 public class TeleportAddonCommand implements CommandExecutor {

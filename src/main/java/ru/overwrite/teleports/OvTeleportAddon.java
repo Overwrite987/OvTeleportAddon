@@ -12,6 +12,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.overwrite.teleports.commands.TeleportAddonCommand;
+import ru.overwrite.teleports.commands.TeleportCancelCommand;
 import ru.overwrite.teleports.configuration.Config;
 import ru.overwrite.teleports.listeners.*;
 import ru.overwrite.teleports.logging.Logger;

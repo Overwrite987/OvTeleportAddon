@@ -1,10 +1,13 @@
-package ru.overwrite.teleports;
+package ru.overwrite.teleports.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import ru.overwrite.teleports.OvTeleportAddon;
+import ru.overwrite.teleports.TeleportManager;
+import ru.overwrite.teleports.TeleportTask;
 import ru.overwrite.teleports.configuration.Config;
 import ru.overwrite.teleports.utils.Utils;
 
