@@ -1,9 +1,10 @@
-package ru.overwrite.teleports.animations;
+package ru.overwrite.teleports.animations.impl;
 
 import com.destroystokyo.paper.ParticleBuilder;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import ru.overwrite.teleports.animations.Animation;
 import ru.overwrite.teleports.configuration.data.Particles;
 
 import java.util.Iterator;

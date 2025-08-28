@@ -1,7 +1,8 @@
-package ru.overwrite.teleports.utils.logging;
+package ru.overwrite.teleports.logging.impl;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import ru.overwrite.teleports.OvTeleportAddon;
+import ru.overwrite.teleports.logging.Logger;
 
 public class PaperLogger implements Logger {
 

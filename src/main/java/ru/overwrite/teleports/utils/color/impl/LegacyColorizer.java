@@ -1,6 +1,7 @@
-package ru.overwrite.teleports.utils.color;
+package ru.overwrite.teleports.utils.color.impl;
 
 import ru.overwrite.teleports.utils.Utils;
+import ru.overwrite.teleports.utils.color.Colorizer;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

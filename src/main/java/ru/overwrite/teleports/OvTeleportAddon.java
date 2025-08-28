@@ -14,11 +14,11 @@ import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.overwrite.teleports.configuration.Config;
 import ru.overwrite.teleports.listeners.*;
+import ru.overwrite.teleports.logging.Logger;
+import ru.overwrite.teleports.logging.impl.BukkitLogger;
+import ru.overwrite.teleports.logging.impl.PaperLogger;
 import ru.overwrite.teleports.utils.Utils;
 import ru.overwrite.teleports.utils.VersionUtils;
-import ru.overwrite.teleports.utils.logging.BukkitLogger;
-import ru.overwrite.teleports.utils.logging.Logger;
-import ru.overwrite.teleports.utils.logging.PaperLogger;
 
 @Getter
 public final class OvTeleportAddon extends JavaPlugin {

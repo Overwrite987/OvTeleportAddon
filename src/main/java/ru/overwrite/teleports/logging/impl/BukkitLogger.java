@@ -1,6 +1,7 @@
-package ru.overwrite.teleports.utils.logging;
+package ru.overwrite.teleports.logging.impl;
 
 import ru.overwrite.teleports.OvTeleportAddon;
+import ru.overwrite.teleports.logging.Logger;
 
 public class BukkitLogger implements Logger {
 

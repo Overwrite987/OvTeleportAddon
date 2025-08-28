@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import ru.overwrite.teleports.actions.Action;
-import ru.overwrite.teleports.animations.BasicAnimation;
+import ru.overwrite.teleports.animations.impl.BasicAnimation;
 import ru.overwrite.teleports.configuration.data.Actions;
 import ru.overwrite.teleports.configuration.data.Bossbar;
 import ru.overwrite.teleports.configuration.data.Settings;

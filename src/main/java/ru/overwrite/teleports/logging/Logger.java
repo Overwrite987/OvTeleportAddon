@@ -1,4 +1,4 @@
-package ru.overwrite.teleports.utils.logging;
+package ru.overwrite.teleports.logging;
 
 public interface Logger {
 
