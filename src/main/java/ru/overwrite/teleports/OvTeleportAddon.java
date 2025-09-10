@@ -48,6 +48,7 @@ public final class OvTeleportAddon extends JavaPlugin {
             ServicesManager servicesManager = server.getServicesManager();
             setupPerms(servicesManager);
         }
+        setupPapi(mainSettings, pluginManager);
         essentials = (Essentials) pluginManager.getPlugin("Essentials");
         pluginConfig.setupConfig(config);
         registerEvents(pluginManager);
@@ -102,6 +103,14 @@ public final class OvTeleportAddon extends JavaPlugin {
     private Permission getPermissionProvider(ServicesManager servicesManager) {
         final RegisteredServiceProvider<Permission> provider = servicesManager.getRegistration(Permission.class);
         return provider != null ? provider.getProvider() : null;
+    }
+
+    private void setupPapi(ConfigurationSection mainSettings, PluginManager pluginManager) {
+        if (!mainSettings.getBoolean("papi_support", true) || !pluginManager.isPluginEnabled("PlaceholderAPI")) {
+            return;
+        }
+        Utils.USE_PAPI = true;
+        pluginLogger.info("§eПлейсхолдеры подключены!");
     }
 
     @Override
