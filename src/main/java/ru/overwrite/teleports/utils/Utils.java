@@ -5,7 +5,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Particle;
-import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -21,8 +20,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
 
@@ -37,17 +34,6 @@ public final class Utils {
             case "LEGACY_ADVANCED" -> new LegacyAdvancedColorizer();
             default -> new LegacyColorizer();
         };
-    }
-
-    public List<World> getWorldList(List<String> worldNames) {
-        if (!worldNames.isEmpty() && worldNames.get(0).equals("*")) {
-            return Bukkit.getWorlds();
-        }
-        final List<World> worldList = new ArrayList<>(worldNames.size());
-        for (String w : worldNames) {
-            worldList.add(Bukkit.getWorld(w));
-        }
-        return worldList;
     }
 
     public Particles.ParticleData createParticleData(String id) {
