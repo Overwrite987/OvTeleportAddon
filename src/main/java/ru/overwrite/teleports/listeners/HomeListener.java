@@ -2,7 +2,6 @@ package ru.overwrite.teleports.listeners;
 
 import com.earth2me.essentials.User;
 import net.ess3.api.events.UserTeleportHomeEvent;
-import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import ru.overwrite.teleports.OvTeleportAddon;
